@@ -6,6 +6,7 @@ import com.klaudia.transactionsimporter.exceptions.imports.IllegalFileFormatExce
 import com.klaudia.transactionsimporter.exceptions.imports.ImportJobNotFoundException;
 import com.klaudia.transactionsimporter.imports.*;
 import com.klaudia.transactionsimporter.imports.dto.ImportJobResponse;
+import com.klaudia.transactionsimporter.imports.dto.ImportJobStatusResponse;
 import com.klaudia.transactionsimporter.imports.model.ImportJob;
 import com.klaudia.transactionsimporter.imports.model.ImportStatus;
 import com.klaudia.transactionsimporter.imports.parser.CSVParser;
@@ -66,11 +67,11 @@ public class ImportService {
         return importRepository.existsByFilenameAndFileSize(file.getOriginalFilename(), file.getSize());
     }
 
-    public ImportJobResponse checkImportStatus(String id) {
+    public ImportJobStatusResponse checkImportStatus(String id) {
         Optional<ImportJob> foundImportJob = importRepository.findById(id);
         if (foundImportJob.isEmpty()) throw new ImportJobNotFoundException("There is no import job with id: " + id);
         ImportJob importJob = foundImportJob.get();
-        return ImportJobResponse.from(importJob);
+        return ImportJobStatusResponse.from(importJob);
 
     }
 }

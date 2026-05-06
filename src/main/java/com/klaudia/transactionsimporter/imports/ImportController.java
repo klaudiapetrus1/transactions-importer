@@ -1,6 +1,7 @@
 package com.klaudia.transactionsimporter.imports;
 
 import com.klaudia.transactionsimporter.imports.dto.ImportJobResponse;
+import com.klaudia.transactionsimporter.imports.dto.ImportJobStatusResponse;
 import com.klaudia.transactionsimporter.imports.service.ImportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -18,12 +19,12 @@ public class ImportController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ImportJobResponse> importFile(@RequestParam("file") MultipartFile file) {
         ImportJobResponse importJobResponse = importService.importCsv(file);
-        return ResponseEntity.ok(importJobResponse);
+        return ResponseEntity.accepted().body(importJobResponse);
     }
 
     @GetMapping("/status/{id}")
-    public ResponseEntity<ImportJobResponse> getStatus(@PathVariable String id) {
-        ImportJobResponse importJobResponse = importService.checkImportStatus(id);
-        return ResponseEntity.ok(importJobResponse);
+    public ResponseEntity<ImportJobStatusResponse> getStatus(@PathVariable String id) {
+        ImportJobStatusResponse importJobStatusResponse = importService.checkImportStatus(id);
+        return ResponseEntity.ok(importJobStatusResponse);
     }
 }
