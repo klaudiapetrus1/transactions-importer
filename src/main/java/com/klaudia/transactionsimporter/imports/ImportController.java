@@ -1,5 +1,7 @@
 package com.klaudia.transactionsimporter.imports;
 
+import com.klaudia.transactionsimporter.imports.dto.ImportJobResponse;
+import com.klaudia.transactionsimporter.imports.service.ImportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

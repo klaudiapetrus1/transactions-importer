@@ -1,4 +1,4 @@
-package com.klaudia.transactionsimporter.exceptions;
+package com.klaudia.transactionsimporter.exceptions.imports;
 
 public class ImportJobNotFoundException extends RuntimeException {
     public ImportJobNotFoundException(String message) {

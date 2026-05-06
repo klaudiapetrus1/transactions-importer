@@ -1,13 +1,19 @@
-package com.klaudia.transactionsimporter.imports;
+package com.klaudia.transactionsimporter.imports.service;
 
-import com.klaudia.transactionsimporter.exceptions.DuplicatedImportJobException;
-import com.klaudia.transactionsimporter.exceptions.EmptyFileException;
-import com.klaudia.transactionsimporter.exceptions.IllegalFileFormatException;
-import com.klaudia.transactionsimporter.exceptions.ImportJobNotFoundException;
+import com.klaudia.transactionsimporter.exceptions.imports.DuplicatedImportJobException;
+import com.klaudia.transactionsimporter.exceptions.imports.EmptyFileException;
+import com.klaudia.transactionsimporter.exceptions.imports.IllegalFileFormatException;
+import com.klaudia.transactionsimporter.exceptions.imports.ImportJobNotFoundException;
+import com.klaudia.transactionsimporter.imports.*;
+import com.klaudia.transactionsimporter.imports.dto.ImportJobResponse;
+import com.klaudia.transactionsimporter.imports.model.ImportJob;
+import com.klaudia.transactionsimporter.imports.model.ImportStatus;
+import com.klaudia.transactionsimporter.imports.parser.CSVParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
@@ -29,7 +35,15 @@ public class ImportService {
             throw new DuplicatedImportJobException("The file you are trying to import was already imported");
         }
         ImportJob importJob = saveInitialImportJob(file);
-        csvParser.parse(file);
+        byte[] fileBytes;
+        try {
+            fileBytes = file.getBytes();
+        } catch (IOException e) {
+            throw new EmptyFileException("Could not read file content");
+        }
+        csvParser.parse(fileBytes, importJob.getId());
+        importJob.setStatus(ImportStatus.PROCESSING);
+        importRepository.save(importJob);
         return ImportJobResponse.from(importJob);
     }
 
@@ -39,7 +53,7 @@ public class ImportService {
                 .fileSize(file.getSize())
                 .status(ImportStatus.CREATED)
                 .createdAt(Instant.now())
-                .totalRows(0)
+                .totalProcessedRows(0)
                 .successRows(0)
                 .failedRows(0)
                 .errors(List.of())
@@ -54,9 +68,9 @@ public class ImportService {
 
     public ImportJobResponse checkImportStatus(String id) {
         Optional<ImportJob> foundImportJob = importRepository.findById(id);
-        if (foundImportJob.isPresent()) {
-            ImportJob importJob = foundImportJob.get();
-            return ImportJobResponse.from(importJob);
-        } else throw new ImportJobNotFoundException("There is no import job with id: " + id);
+        if (foundImportJob.isEmpty()) throw new ImportJobNotFoundException("There is no import job with id: " + id);
+        ImportJob importJob = foundImportJob.get();
+        return ImportJobResponse.from(importJob);
+
     }
 }

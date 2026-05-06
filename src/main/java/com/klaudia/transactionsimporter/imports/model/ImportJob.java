@@ -1,4 +1,4 @@
-package com.klaudia.transactionsimporter.imports;
+package com.klaudia.transactionsimporter.imports.model;
 
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +22,7 @@ public class ImportJob {
     @Indexed
     private Instant createdAt;
     private Instant finishedAt;
-    private int totalRows;
+    private int totalProcessedRows;
     private int successRows;
     private int failedRows;
     private long fileSize;
