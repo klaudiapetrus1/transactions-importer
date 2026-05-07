@@ -154,7 +154,7 @@ public class CSVParser {
                 .iban(iban)
                 .transactionDate(date)
                 .currency(parsedCurrency)
-                .category(category)
+                .category(category.toUpperCase())
                 .amount(amount)
                 .title(title)
                 .month(date.getMonthValue())

@@ -12,6 +12,10 @@ import org.springframework.data.mongodb.core.mapping.FieldType;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/*
+if we would like extend the app and read the transaction from the database and map it to the model
+we would need @NoArgsConstructor for spring data mongodb and @AllArgsConstructor for the builder
+ */
 @Data
 @Builder
 @Document("transactions")
