@@ -121,7 +121,7 @@ public class CSVParser {
 
         //IbanUtil.validate() method can also be used instead if we would like to know what exactly went wrong
         boolean validIban = IbanUtil.isValid(iban);
-        if (!validIban) throw new CsvValidationRowException("Invalid IBAN: " + iban);
+        if (!validIban) throw new CsvValidationRowException("Row" + rowNumber + ": Invalid IBAN: " + iban);
 
         LocalDate date;
         try {
