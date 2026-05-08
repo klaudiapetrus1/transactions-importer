@@ -107,7 +107,8 @@ public class CSVParser {
     }
 
     private Transaction mapAndValidate(String[] line, int rowNumber, String importJobId) {
-        if (line.length < 6) {
+        line = removeTrailingEmptyCells(line);
+        if (line.length != 6) {
             throw new CsvValidationRowException(
                     "Row " + rowNumber + ": expected 6 columns, got " + line.length
             );
@@ -161,6 +162,18 @@ public class CSVParser {
                 .year(date.getYear())
                 .importJobId(importJobId)
                 .build();
+    }
+
+    private String[] removeTrailingEmptyCells(String[] line) {
+        int lastNonEmptyIndex = line.length - 1;
+
+        while (lastNonEmptyIndex >= 0 && line[lastNonEmptyIndex].trim().isEmpty()) {
+            lastNonEmptyIndex--;
+        }
+
+        String[] trimmedLine = new String[lastNonEmptyIndex + 1];
+        System.arraycopy(line, 0, trimmedLine, 0, lastNonEmptyIndex + 1);
+        return trimmedLine;
     }
 
 }
