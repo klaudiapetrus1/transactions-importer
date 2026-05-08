@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,13 +15,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/statistics")
 @RequiredArgsConstructor
+@Validated
 public class StatisticController {
 
     private final StatisticService statisticService;
 
     @GetMapping("/category")
-    public ResponseEntity<StatisticResponse> getByCategory(@RequestParam String category) {
-        StatisticResponse statsByCategory = statisticService.getStatsByCategory(category);
+    public ResponseEntity<List<StatisticResponse>> getByCategory(@RequestParam String category) {
+        List<StatisticResponse> statsByCategory = statisticService.getStatsByCategory(category);
         return ResponseEntity.ok(statsByCategory);
     }
 
@@ -31,9 +33,9 @@ public class StatisticController {
     }
 
     @GetMapping("/month")
-    public ResponseEntity<StatisticResponse> getByMonth(@RequestParam int year,
+    public ResponseEntity<List<MonthStatisticResponse>> getByMonth(@RequestParam int year,
                                                         @RequestParam @Min(1) @Max(12) int month) {
-        StatisticResponse statsByMonth = statisticService.getStatsByMonth(year, month);
+        List<MonthStatisticResponse> statsByMonth = statisticService.getStatsByMonth(year, month);
         return ResponseEntity.ok(statsByMonth);
     }
 
