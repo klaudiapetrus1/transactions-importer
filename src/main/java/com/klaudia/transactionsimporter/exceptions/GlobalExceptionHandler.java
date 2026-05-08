@@ -4,6 +4,9 @@ import com.klaudia.transactionsimporter.exceptions.imports.DuplicatedImportJobEx
 import com.klaudia.transactionsimporter.exceptions.imports.EmptyFileException;
 import com.klaudia.transactionsimporter.exceptions.imports.IllegalFileFormatException;
 import com.klaudia.transactionsimporter.exceptions.imports.ImportJobNotFoundException;
+import com.klaudia.transactionsimporter.exceptions.statistics.CategoryNotFoundException;
+import com.klaudia.transactionsimporter.exceptions.statistics.IbanNotFoundException;
+import com.klaudia.transactionsimporter.exceptions.statistics.MonthStatisticsNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,8 +20,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 
-    @ExceptionHandler(ImportJobNotFoundException.class)
-    public ResponseEntity<String> handleImportJobNotFoundException(ImportJobNotFoundException e) {
+    @ExceptionHandler({
+            ImportJobNotFoundException.class,
+            CategoryNotFoundException.class,
+            IbanNotFoundException.class,
+            MonthStatisticsNotFoundException.class})
+    public ResponseEntity<String> handleNotFoundException(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
