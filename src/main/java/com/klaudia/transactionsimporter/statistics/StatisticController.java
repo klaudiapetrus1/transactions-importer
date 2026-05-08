@@ -1,5 +1,7 @@
 package com.klaudia.transactionsimporter.statistics;
 
+import com.klaudia.transactionsimporter.statistics.dto.MonthStatisticResponse;
+import com.klaudia.transactionsimporter.statistics.dto.StatisticResponse;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +36,7 @@ public class StatisticController {
 
     @GetMapping("/month")
     public ResponseEntity<List<MonthStatisticResponse>> getByMonth(@RequestParam int year,
-                                                        @RequestParam @Min(1) @Max(12) int month) {
+                                                                   @RequestParam @Min(1) @Max(12) int month) {
         List<MonthStatisticResponse> statsByMonth = statisticService.getStatsByMonth(year, month);
         return ResponseEntity.ok(statsByMonth);
     }

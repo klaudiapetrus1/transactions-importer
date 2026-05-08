@@ -3,6 +3,8 @@ package com.klaudia.transactionsimporter.statistics;
 import com.klaudia.transactionsimporter.exceptions.statistics.CategoryNotFoundException;
 import com.klaudia.transactionsimporter.exceptions.statistics.IbanNotFoundException;
 import com.klaudia.transactionsimporter.exceptions.statistics.MonthStatisticsNotFoundException;
+import com.klaudia.transactionsimporter.statistics.dto.MonthStatisticResponse;
+import com.klaudia.transactionsimporter.statistics.dto.StatisticResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;

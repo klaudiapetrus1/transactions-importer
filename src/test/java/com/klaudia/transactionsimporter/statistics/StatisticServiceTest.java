@@ -3,6 +3,8 @@ package com.klaudia.transactionsimporter.statistics;
 import com.klaudia.transactionsimporter.exceptions.statistics.CategoryNotFoundException;
 import com.klaudia.transactionsimporter.exceptions.statistics.IbanNotFoundException;
 import com.klaudia.transactionsimporter.exceptions.statistics.MonthStatisticsNotFoundException;
+import com.klaudia.transactionsimporter.statistics.dto.MonthStatisticResponse;
+import com.klaudia.transactionsimporter.statistics.dto.StatisticResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
